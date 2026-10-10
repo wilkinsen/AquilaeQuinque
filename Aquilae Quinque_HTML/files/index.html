@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rumah Sakit B3 · Rawat Inap</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230FB5A6'/%3E%3Cpath d='M16 8v16M8 16h16' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0E2433; --muted:#566B7D; --line:#E2EDF1; --mist:#F4F9FB; --white:#fff;
+  --teal:#0FB5A6; --teal-d:#067A70; --mint:#E4F7F4; --sky:#2E7CF6; --sky-l:#E8F0FE;
+  --coral:#D84A3C; --coral-l:#FDECEA; --amber:#B7791F; --amber-l:#FFF4DC;
+  --r:20px; --shadow:0 1px 2px rgba(14,36,51,.04),0 8px 28px -12px rgba(14,36,51,.12);
+  --fs:100%;
+  --display:'Sora','Plus Jakarta Sans',system-ui,sans-serif;
+  --body:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box}
+html{font-size:var(--fs);scroll-behavior:smooth}
+body{margin:0;background:#fff;color:var(--ink);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--display);margin:0;line-height:1.25;letter-spacing:-.01em}
+a{color:var(--teal-d)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sky);outline-offset:2px;border-radius:10px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;z-index:100}
+.skip:focus{left:8px}
+
+/* shell */
+.shell{display:grid;grid-template-columns:272px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;padding:22px 16px;border-right:1px solid var(--line);background:#fff;display:flex;flex-direction:column;gap:18px}
+.brand{display:flex;gap:12px;align-items:center;padding:4px 8px}
+.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--teal),var(--sky));display:grid;place-items:center;box-shadow:0 8px 20px -8px rgba(15,181,166,.7)}
+.brand b{font-family:var(--display);font-size:1.05rem;display:block;line-height:1.2}
+.brand small{color:var(--muted);font-size:.78rem}
+nav{display:flex;flex-direction:column;gap:4px}
+nav a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;text-decoration:none;color:var(--ink);font-weight:500;transition:background .15s}
+nav a svg{flex:none;width:22px;height:22px;stroke:var(--muted);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav a:hover{background:var(--mist)}
+nav a[aria-current=page]{background:var(--mint);color:var(--teal-d);font-weight:700}
+nav a[aria-current=page] svg{stroke:var(--teal-d)}
+.sizer{margin-top:auto;display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;font-size:.85rem;color:var(--muted)}
+.sizer button{margin-left:auto;border:1px solid var(--line);background:#fff;border-radius:10px;width:38px;height:38px;cursor:pointer;font-weight:700}
+.sizer button+button{margin-left:0}
+.sizer button:hover{background:var(--mist)}
+main{min-width:0}
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;padding:14px 32px;background:rgba(255,255,255,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.top h1{font-size:1.25rem}
+.top p{margin:0;color:var(--muted);font-size:.88rem}
+.top .grow{flex:1;min-width:0}
+.menu-btn{display:none;border:1px solid var(--line);background:#fff;border-radius:12px;width:44px;height:44px;cursor:pointer}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:999px;background:var(--mint);color:var(--teal-d);font-size:.82rem;font-weight:600;white-space:nowrap}
+.chip i{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px rgba(15,181,166,.2)}
+.chip.off{background:var(--coral-l);color:var(--coral)} .chip.off i{background:var(--coral);box-shadow:0 0 0 4px rgba(216,74,60,.18)}
+#view{padding:28px 32px 80px;max-width:1240px;outline:none}
+
+/* cards & layout */
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;box-shadow:var(--shadow)}
+.card h3{font-size:1.1rem;margin-bottom:4px}
+.card .sub{color:var(--muted);margin:0 0 18px;font-size:.93rem}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start}
+.stack{display:flex;flex-direction:column;gap:20px}
+.sect{margin:34px 0 14px;display:flex;align-items:baseline;gap:12px}
+.sect h3{font-size:1.15rem}
+.sect span{color:var(--muted);font-size:.9rem}
+
+/* hero: satu momen utama (denyut EKG) */
+.hero{position:relative;overflow:hidden;border-radius:28px;padding:34px 36px;border:1px solid var(--line);
+  background:radial-gradient(circle at 1px 1px,rgba(15,181,166,.18) 1px,transparent 1.5px) 0 0/22px 22px,linear-gradient(120deg,#fff 40%,var(--mint));
+  display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px;align-items:center}
+.hero h2{font-size:clamp(1.5rem,2.6vw,2.1rem);margin-bottom:10px}
+.hero p{color:var(--muted);margin:0 0 20px;max-width:46ch}
+.occ{display:flex;align-items:center;gap:14px;font-weight:600;font-size:.92rem}
+.bar{flex:1;max-width:260px;height:12px;border-radius:99px;background:#fff;border:1px solid var(--line);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--teal),var(--sky))}
+.ecg{width:100%;height:150px}
+.ecg path{fill:none;stroke:var(--teal);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:220 560;animation:beat 3.6s linear infinite;filter:drop-shadow(0 0 6px rgba(15,181,166,.55))}
+.ecg .base{stroke:rgba(15,181,166,.22);stroke-dasharray:none;animation:none;filter:none;stroke-width:2}
+@keyframes beat{from{stroke-dashoffset:220}to{stroke-dashoffset:-560}}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-top:20px}
+.stat{padding:18px 20px;border-radius:18px;border:1px solid var(--line);background:#fff;box-shadow:var(--shadow)}
+.stat b{display:block;font-family:var(--display);font-size:1.9rem;line-height:1.1}
+.stat span{color:var(--muted);font-size:.9rem}
+.stat.accent{background:linear-gradient(135deg,var(--teal),var(--sky));border:0;color:#fff}
+.stat.accent span{color:rgba(255,255,255,.9)}
+
+.rooms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.room{border:1px solid var(--line);border-radius:18px;padding:18px;background:#fff;position:relative}
+.room.busy{background:var(--mist)}
+.room .no{font-family:var(--display);font-weight:700;font-size:1.2rem}
+.room .meta{color:var(--muted);font-size:.88rem;margin:2px 0 10px}
+.state{display:inline-flex;align-items:center;gap:7px;font-size:.82rem;font-weight:700;padding:4px 11px;border-radius:99px}
+.state i{width:8px;height:8px;border-radius:50%}
+.state.free{background:var(--mint);color:var(--teal-d)} .state.free i{background:var(--teal)}
+.state.busy{background:var(--amber-l);color:var(--amber)} .state.busy i{background:#E0A030}
+.room .who{margin-top:10px;font-size:.9rem}
+
+.list{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;align-items:center;gap:14px;padding:12px 14px;border:1px solid var(--line);border-radius:16px;background:#fff}
+.row .av{flex:none;width:42px;height:42px;border-radius:14px;background:var(--sky-l);color:var(--sky);display:grid;place-items:center;font-family:var(--display);font-weight:700}
+.row .av.g{background:var(--mint);color:var(--teal-d)}
+.row .txt{flex:1;min-width:0}
+.row .txt b{display:block}
+.row .txt small{color:var(--muted)}
+.empty{padding:26px;text-align:center;color:var(--muted);border:1.5px dashed var(--line);border-radius:18px;background:var(--mist)}
+
+table{width:100%;border-collapse:collapse;font-size:.93rem}
+th{text-align:left;color:var(--muted);font-weight:600;padding:10px 12px;border-bottom:1px solid var(--line)}
+td{padding:12px;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+.tw{overflow-x:auto}
+
+/* forms */
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.form .full{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:6px}
+.field>span{font-weight:600;font-size:.92rem}
+.field small{color:var(--muted);font-size:.82rem}
+input,select,textarea{width:100%;min-height:50px;padding:12px 14px;border:1.5px solid #D3E2E8;border-radius:14px;background:#fff;transition:border-color .15s,box-shadow .15s}
+textarea{min-height:90px;resize:vertical}
+input:hover,select:hover,textarea:hover{border-color:#B5CCD5}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 4px rgba(15,181,166,.18)}
+.seg{display:flex;gap:8px;flex-wrap:wrap}
+.seg label{flex:1;min-width:92px}
+.seg input{position:absolute;opacity:0;width:1px;height:1px;min-height:0}
+.seg span{display:block;text-align:center;padding:12px;border:1.5px solid #D3E2E8;border-radius:14px;cursor:pointer;font-weight:600}
+.seg input:checked+span{background:var(--mint);border-color:var(--teal);color:var(--teal-d)}
+.seg input:focus-visible+span{outline:3px solid var(--sky);outline-offset:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;padding:0 24px;border:0;border-radius:14px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,var(--teal),#0A9D95);color:#fff;box-shadow:0 10px 22px -10px rgba(15,181,166,.8);transition:transform .12s,box-shadow .12s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 14px 26px -10px rgba(15,181,166,.9)}
+.btn:disabled{opacity:.6;cursor:wait;transform:none}
+.btn.ghost{background:#fff;color:var(--ink);border:1.5px solid #D3E2E8;box-shadow:none}
+.btn.danger{background:linear-gradient(135deg,#E5584A,#C73A2D);box-shadow:0 10px 22px -10px rgba(216,74,60,.8)}
+.btn.sm{min-height:40px;padding:0 16px;font-size:.9rem;border-radius:12px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+
+/* tabs */
+.tabs{display:flex;gap:6px;padding:6px;background:var(--mist);border-radius:16px;overflow-x:auto;margin:18px 0}
+.tabs button{flex:none;border:0;background:transparent;padding:11px 18px;border-radius:12px;font-weight:600;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected=true]{background:#fff;color:var(--teal-d);box-shadow:var(--shadow)}
+.facts{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.fact{padding:8px 14px;border-radius:12px;background:var(--mist);font-size:.88rem}
+.fact b{display:block;font-size:.98rem}
+.vitals{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.vital{border:1px solid var(--line);border-radius:18px;padding:16px}
+.vital .d{color:var(--muted);font-size:.85rem;margin-bottom:8px}
+.vital .vs{display:flex;gap:8px;flex-wrap:wrap}
+.pill{padding:5px 11px;border-radius:99px;background:var(--sky-l);color:#1B57C4;font-weight:600;font-size:.84rem}
+.vital p{margin:10px 0 0;font-size:.92rem}
+.tag{display:inline-block;padding:4px 11px;border-radius:99px;font-size:.8rem;font-weight:700}
+.tag.ok{background:var(--mint);color:var(--teal-d)} .tag.wait{background:var(--amber-l);color:var(--amber)}
+.money{font-family:var(--display);font-weight:600;white-space:nowrap}
+
+/* receipt */
+.receipt{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#fff;box-shadow:var(--shadow)}
+.receipt header{padding:18px 24px;background:linear-gradient(120deg,var(--mint),#fff);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.receipt .body{padding:6px 24px 4px}
+.receipt .cat{display:flex;justify-content:space-between;font-weight:700;padding:14px 0 4px}
+.receipt .it{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:.92rem;padding:3px 0 3px 14px}
+.receipt .sum{padding:16px 24px;border-top:1.5px dashed var(--line);display:flex;flex-direction:column;gap:6px}
+.receipt .sum div{display:flex;justify-content:space-between}
+.receipt .sum .tot{font-family:var(--display);font-size:1.3rem;font-weight:700}
+.bills{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
+
+.notice{padding:14px 16px;border-radius:14px;background:var(--sky-l);color:#1B4B9E;font-size:.92rem;margin-bottom:16px}
+.logline{padding:10px 14px;border-radius:12px;background:var(--mist);font-size:.9rem;margin-bottom:8px}
+
+/* toast + dialog */
+#toasts{position:fixed;right:20px;bottom:20px;display:flex;flex-direction:column;gap:10px;z-index:200;max-width:min(420px,calc(100vw - 40px))}
+.toast{padding:14px 18px;border-radius:16px;background:var(--ink);color:#fff;box-shadow:0 14px 34px -10px rgba(14,36,51,.5);font-weight:500;animation:in .25s ease}
+.toast.ok{background:#07685F} .toast.err{background:#B7342A}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+dialog{border:0;border-radius:24px;padding:28px;max-width:440px;width:calc(100vw - 40px);box-shadow:0 30px 80px -20px rgba(14,36,51,.45)}
+dialog::backdrop{background:rgba(14,36,51,.35);backdrop-filter:blur(3px)}
+dialog h3{margin-bottom:8px} dialog p{color:var(--muted);margin:0 0 20px}
+dialog .actions{justify-content:flex-end}
+.loading{padding:60px;text-align:center;color:var(--muted)}
+
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .side{position:fixed;inset:0 auto 0 0;width:292px;z-index:60;transform:translateX(-102%);transition:transform .25s;box-shadow:0 0 60px rgba(14,36,51,.25)}
+  .side.open{transform:none}
+  .scrim{position:fixed;inset:0;background:rgba(14,36,51,.35);z-index:50;display:none}
+  .scrim.on{display:block}
+  .menu-btn{display:grid;place-items:center}
+  .top,#view{padding-left:18px;padding-right:18px}
+  .hero{grid-template-columns:1fr;padding:26px 22px}
+  .grid2{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .form{grid-template-columns:1fr}
+  .top .chip{display:none}
+  .bills{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#view">Lewati ke konten utama</a>
+<div class="scrim" id="scrim"></div>
+<div class="shell">
+  <aside class="side" id="side" aria-label="Menu utama">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"><path d="M12 4v16M4 12h16"/></svg></div>
+      <div><b>Rumah Sakit B3</b><small>Layanan Rawat Inap</small></div>
+    </div>
+    <nav id="nav"></nav>
+    <div class="sizer" role="group" aria-label="Ukuran tulisan">
+      <span>Ukuran tulisan</span>
+      <button type="button" id="fs-minus" aria-label="Perkecil tulisan">A−</button>
+      <button type="button" id="fs-plus" aria-label="Perbesar tulisan">A+</button>
+    </div>
+  </aside>
+  <main>
+    <header class="top">
+      <button class="menu-btn" id="menu" aria-label="Buka menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <div class="grow"><h1 id="ttl">Beranda</h1><p id="sub"></p></div>
+      <span class="chip" id="conn"><i></i><span>Terhubung ke Java</span></span>
+    </header>
+    <section id="view" tabindex="-1"><div class="loading">Memuat data…</div></section>
+  </main>
+</div>
+<div id="toasts" role="status" aria-live="polite"></div>
+<dialog id="dlg"></dialog>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s);
+const rp=n=>'Rp '+Math.round(+n||0).toLocaleString('id-ID');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const view=$('#view');
+let OV=null, sel={rm:'',tab:'kondisi'};
+
+/* ---------- komunikasi dengan Java (WebMain) ---------- */
+async function api(path,method='GET',body){
+  let res;
+  try{res=await fetch(path,{method,headers:{'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});}
+  catch(e){setConn(false);throw new Error('Tidak dapat terhubung ke program Java. Pastikan WebMain masih berjalan.');}
+  setConn(true);
+  const data=await res.json().catch(()=>({}));
+  if(!res.ok)throw new Error(data.error||'Terjadi kesalahan.');
+  return data;
+}
+function setConn(ok){const c=$('#conn');c.classList.toggle('off',!ok);c.lastElementChild.textContent=ok?'Terhubung ke Java':'Terputus dari Java';}
+async function refresh(){OV=await api('/api/overview');}
+function toast(msg,type='ok'){
+  const t=document.createElement('div');t.className='toast '+type;t.textContent=msg;$('#toasts').append(t);
+  setTimeout(()=>t.remove(),type==='err'?7000:4500);
+}
+function confirmBox(title,text,okLabel,danger){
+  return new Promise(res=>{
+    const d=$('#dlg');
+    d.innerHTML=`<h3>${esc(title)}</h3><p>${esc(text)}</p><div class="actions"><button class="btn ghost sm" value="no">Batal</button><button class="btn sm ${danger?'danger':''}" value="yes">${esc(okLabel)}</button></div>`;
+    d.onclose=()=>res(d.returnValue==='yes');
+    d.querySelectorAll('button').forEach(b=>b.onclick=()=>d.close(b.value));
+    d.showModal();
+  });
+}
+
+/* ---------- komponen kecil ---------- */
+const ICON={
+ home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',
+ bed:'<path d="M3 19V6"/><path d="M3 15h18v4"/><path d="M21 15v-3a3 3 0 0 0-3-3h-7v6"/><circle cx="7" cy="11.5" r="1.6"/>',
+ userplus:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M19 7v6M16 10h6"/>',
+ heart:'<path d="M12 20s-7-4.6-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.4-7 10-7 10z"/>',
+ pulse:'<path d="M3 12h4l3-8 4 16 3-8h4"/>',
+ flask:'<path d="M9 3h6M10 3v6l-5.5 10a1.5 1.5 0 0 0 1.3 2.2h12.4a1.5 1.5 0 0 0 1.3-2.2L14 9V3"/><path d="M7.5 15h9"/>',
+ swap:'<path d="M4 8h13l-3-3M20 16H7l3 3"/>',
+ door:'<path d="M10 4H5v16h5"/><path d="M14 8l4 4-4 4M18 12H9"/>',
+ shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+ receipt:'<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/>'};
+const svg=n=>`<svg viewBox="0 0 24 24" aria-hidden="true">${ICON[n]}</svg>`;
+const initial=n=>esc((n||'?').trim().charAt(0).toUpperCase());
+const field=(label,name,type='text',extra='',hint='')=>`<label class="field"><span>${label}</span><input name="${name}" type="${type}" ${extra} required>${hint?`<small>${hint}</small>`:''}</label>`;
+const emptyBox=(t,link)=>`<div class="empty">${t}${link?` <a href="${link[0]}">${link[1]}</a>`:''}</div>`;
+function patientSelect(value){
+  const ps=OV.patients;
+  return `<label class="field"><span>Pasien</span><select name="rm" required>${ps.map(p=>`<option value="${esc(p.rm)}" ${p.rm===value?'selected':''}>${esc(p.name)} · RM ${esc(p.rm)} · Kamar ${esc(p.room)}</option>`).join('')}</select></label>`;
+}
+function needPatients(){return OV.patients.length?'':emptyBox('Belum ada pasien yang sedang dirawat.',['#admisi','Daftarkan pasien dulu.']);}
+function bind(form,fn,okMsg){
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();
+    const btn=form.querySelector('button[type=submit]');btn.disabled=true;
+    try{const r=await fn(Object.fromEntries(new FormData(form)));toast(r?.message||okMsg||'Berhasil.');}
+    catch(err){toast(err.message,'err');}
+    finally{btn.disabled=false;}
+  });
+}
+function roomCard(r){
+  return `<article class="room ${r.occupied?'busy':''}">
+    <div class="no">${esc(r.number)}</div><div class="meta">${esc(r.roomClass)} · ${rp(r.rate)}/malam</div>
+    <span class="state ${r.occupied?'busy':'free'}"><i></i>${r.occupied?'Terisi':'Kosong'}</span>
+    ${r.occupied?`<div class="who"><b>${esc(r.patientName)}</b><br><small>${esc(r.doctor)}</small></div>`:''}
+  </article>`;
+}
+function receipt(b){
+  const cats=['Kamar','Tindakan','Obat/Infus','Laboratorium'];
+  const body=cats.map(c=>{const its=b.items.filter(i=>i.category===c);if(!its.length)return'';
+    return `<div class="cat"><span>${c}</span><span class="money">${rp(its.reduce((s,i)=>s+i.amount,0))}</span></div>`+
+      its.map(i=>`<div class="it"><span>${esc(i.description)}</span><span>${rp(i.amount)}</span></div>`).join('');}).join('');
+  return `<article class="receipt"><header><div><b>${esc(b.patient)}</b><br><small>RM ${esc(b.rm)}${b.date?' · Pulang '+esc(b.date):''}</small></div><span class="tag ${b.insuranceCovered>0?'ok':'wait'}">${b.insuranceCovered>0?'Ada klaim asuransi':'Belum ada klaim'}</span></header>
+    <div class="body">${body}</div>
+    <div class="sum"><div class="tot"><span>Total</span><span>${rp(b.total)}</span></div>
+    ${b.insuranceCovered>0?`<div><span>Ditanggung asuransi</span><span class="money">${rp(b.insuranceCovered)}</span></div><div><b>Sisa dibayar pasien</b><b class="money">${rp(b.remaining)}</b></div>`:''}</div></article>`;
+}
+function classOptions(){
+  return OV.classes.map(c=>{const free=OV.rooms.filter(r=>r.roomClass===c&&!r.occupied).length;
+    return `<option value="${c}" ${free?'':'disabled'}>${c} — ${free?free+' kamar kosong':'penuh'}</option>`;}).join('');
+}
+const greet=()=>{const h=new Date().getHours();return h<11?'Selamat pagi':h<15?'Selamat siang':h<19?'Selamat sore':'Selamat malam';};
+
+/* ---------- halaman ---------- */
+const PAGES={
+beranda:{title:'Beranda',sub:'Ringkasan rawat inap dan data master',icon:'home',async render(){
+  const o=OV,s=o.stats,pct=s.totalRooms?Math.round(s.occupied/s.totalRooms*100):0;
+  view.innerHTML=`
+  <section class="hero">
+    <div><h2>${greet()}. Berikut kondisi rawat inap saat ini.</h2>
+      <p>Daftarkan pasien, catat perawatan harian, hingga buat tagihan — semua dari menu di sebelah kiri.</p>
+      <div class="occ"><div class="bar" role="img" aria-label="${pct}% kamar terisi"><i style="width:${pct}%"></i></div><span>${pct}% kamar terisi</span></div></div>
+    <svg class="ecg" viewBox="0 0 520 150" aria-hidden="true">
+      <path class="base" d="M0 80H110l14-10 14 10h28l12-8 14 8 12-60 16 100 14-60 10 18H520"/>
+      <path d="M0 80H110l14-10 14 10h28l12-8 14 8 12-60 16 100 14-60 10 18H520"/></svg>
+  </section>
+  <div class="stats">
+    <div class="stat accent"><b>${s.activePatients}</b><span>Pasien sedang dirawat</span></div>
+    <div class="stat"><b>${s.totalRooms}</b><span>Total kamar</span></div>
+    <div class="stat"><b>${s.occupied}</b><span>Kamar terisi</span></div>
+    <div class="stat"><b>${s.empty}</b><span>Kamar kosong</span></div>
+    <div class="stat"><b>${s.history}</b><span>Pasien sudah pulang</span></div>
+  </div>
+  <div class="sect"><h3>Daftar kamar</h3><span>${s.empty} kosong dari ${s.totalRooms}</span></div>
+  <div class="rooms">${o.rooms.map(roomCard).join('')}</div>
+  <div class="grid2" style="margin-top:34px">
+    <div><div class="sect" style="margin-top:0"><h3>Pasien rawat inap aktif</h3></div>
+      <div class="list">${o.patients.length?o.patients.map(p=>`<div class="row"><div class="av">${initial(p.name)}</div><div class="txt"><b>${esc(p.name)}</b><small>RM ${esc(p.rm)} · Kamar ${esc(p.room)} · Masuk ${esc(p.admissionDate)}</small></div><a class="btn ghost sm" href="#perawatan" data-rm="${esc(p.rm)}">Buka</a></div>`).join(''):emptyBox('Tidak ada pasien aktif.')}</div></div>
+    <div><div class="sect" style="margin-top:0"><h3>Dokter</h3></div>
+      <div class="list">${o.doctors.map(d=>`<div class="row"><div class="av g">${initial(d.name.replace('dr. ',''))}</div><div class="txt"><b>${esc(d.name)}</b><small>${esc(d.id)} · ${esc(d.specialty)}</small></div></div>`).join('')}</div>
+      <div class="sect"><h3>Perawat</h3></div>
+      <div class="list">${o.nurses.map(n=>`<div class="row"><div class="av g">${initial(n.name.replace('Suster ',''))}</div><div class="txt"><b>${esc(n.name)}</b><small>${esc(n.id)}</small></div></div>`).join('')}</div></div>
+  </div>
+  <div class="sect"><h3>Riwayat pasien pulang</h3></div>
+  ${o.history.length?`<div class="card tw"><table><thead><tr><th>No. RM</th><th>Nama</th><th>Tanggal masuk</th><th>Tanggal keluar</th></tr></thead><tbody>${o.history.map(p=>`<tr><td>${esc(p.rm)}</td><td>${esc(p.name)}</td><td>${esc(p.admissionDate)}</td><td>${esc(p.dischargeDate)}</td></tr>`).join('')}</tbody></table></div>`:emptyBox('Belum ada pasien yang pulang.')}
+  ${o.notifications.length?`<div class="sect"><h3>Notifikasi kamar</h3></div>${o.notifications.slice().reverse().map(n=>`<div class="logline">${esc(n)}</div>`).join('')}`:''}`;
+  view.querySelectorAll('[data-rm]').forEach(a=>a.onclick=()=>sel.rm=a.dataset.rm);
+}},
+
+kamar:{title:'Registrasi Kamar',sub:'Tambahkan kamar baru ke rumah sakit',icon:'bed',async render(){
+  view.innerHTML=`<div class="grid2"><div class="card"><h3>Kamar baru</h3><p class="sub">Isi data kamar, lalu simpan.</p>
+    <form class="form" id="f">
+      ${field('Nomor kamar','number','text','placeholder="Contoh: K1-02" maxlength="20"')}
+      <label class="field"><span>Kelas kamar</span><select name="roomClass" required><option value="VIP">VIP</option><option value="1">Kelas 1</option><option value="2">Kelas 2</option><option value="3">Kelas 3</option><option value="ICU">ICU</option></select></label>
+      <div class="full">${field('Tarif per malam (Rp)','rate','number','min="0" step="1000" inputmode="numeric" placeholder="Contoh: 600000"')}</div>
+      <div class="full actions"><button class="btn" type="submit">Simpan kamar</button></div></form></div>
+    <div><div class="sect" style="margin-top:0"><h3>Kamar terdaftar</h3><span>${OV.rooms.length} kamar</span></div><div class="rooms" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr))">${OV.rooms.map(roomCard).join('')}</div></div></div>`;
+  bind($('#f'),async d=>{const r=await api('/api/rooms','POST',d);await go();return r;});
+}},
+
+admisi:{title:'Admisi Pasien',sub:'Check-in pasien rawat inap baru',icon:'userplus',async render(){
+  view.innerHTML=`<div class="card" style="max-width:760px"><h3>Data pasien baru</h3><p class="sub">Sistem akan memilihkan kamar kosong sesuai kelas yang dipilih.</p>
+    <form class="form" id="f">
+      ${field('Nomor rekam medis (RM)','rm','text','placeholder="Contoh: RM002" maxlength="20"')}
+      ${field('Nama pasien','name','text','maxlength="80" autocomplete="off"')}
+      ${field('Usia (tahun)','age','number','min="0" max="150" inputmode="numeric"')}
+      <label class="field"><span>Kelas kamar</span><select name="roomClass" required>${classOptions()}</select></label>
+      <label class="field full"><span>Dokter penanggung jawab</span><select name="doctorId" required>${OV.doctors.map(d=>`<option value="${esc(d.id)}">${esc(d.name)} — ${esc(d.specialty)}</option>`).join('')}</select></label>
+      <div class="full actions"><button class="btn" type="submit">Daftarkan pasien</button></div></form></div>`;
+  bind($('#f'),async d=>{d.age=+d.age;const r=await api('/api/admit','POST',d);await go();return r;});
+}},
+
+perawat:{title:'Perawat & Shift',sub:'Tugaskan perawat ke kamar pasien',icon:'heart',async render(){
+  if(!OV.patients.length){view.innerHTML=needPatients();return;}
+  const first=OV.patients.some(p=>p.rm===sel.rm)?sel.rm:OV.patients[0].rm;
+  const d=await api('/api/patient?rm='+encodeURIComponent(first));
+  view.innerHTML=`<div class="grid2"><div class="card"><h3>Tugaskan perawat</h3><p class="sub">Pilih pasien, perawat, dan shift jaga.</p>
+    <form class="form" id="f"><div class="full">${patientSelect(first)}</div>
+      <label class="field full"><span>Perawat</span><select name="nurseId" required>${OV.nurses.map(n=>`<option value="${esc(n.id)}">${esc(n.name)} (${esc(n.id)})</option>`).join('')}</select></label>
+      <div class="field full"><span>Shift</span><div class="seg">${['Pagi','Siang','Malam'].map((s,i)=>`<label><input type="radio" name="shift" value="${s}" ${i?'':'checked'}><span>${s}</span></label>`).join('')}</div></div>
+      <div class="full actions"><button class="btn" type="submit">Tugaskan perawat</button></div></form></div>
+    <div class="card"><h3>Perawat yang bertugas</h3><p class="sub" id="pn">${esc(d.name)} · Kamar ${esc(d.room)}</p><div class="list" id="nl"></div></div></div>`;
+  const fill=x=>{$('#pn').textContent=`${x.name} · Kamar ${x.room}`;$('#nl').innerHTML=x.nurses.length?x.nurses.map(n=>`<div class="row"><div class="av g">${initial(n.name.replace('Suster ',''))}</div><div class="txt"><b>${esc(n.name)}</b><small>Shift ${esc(n.shift)} · ${esc(n.date)}</small></div></div>`).join(''):emptyBox('Belum ada perawat yang ditugaskan.');};
+  fill(d);
+  $('select[name=rm]').onchange=async e=>{sel.rm=e.target.value;fill(await api('/api/patient?rm='+encodeURIComponent(sel.rm)));};
+  bind($('#f'),async x=>{const r=await api('/api/nurse','POST',x);sel.rm=x.rm;fill(await api('/api/patient?rm='+encodeURIComponent(x.rm)));return r;});
+}},
+
+perawatan:{title:'Perawatan Harian',sub:'Kondisi, tindakan, obat, dan rekap pasien',icon:'pulse',async render(){
+  if(!OV.patients.length){view.innerHTML=needPatients();return;}
+  if(!OV.patients.some(p=>p.rm===sel.rm))sel.rm=OV.patients[0].rm;
+  const d=await api('/api/patient?rm='+encodeURIComponent(sel.rm));
+  const tabs=[['kondisi','Kondisi harian'],['tindakan','Tindakan medis'],['obat','Obat & infus'],['rekap','Rekap harian']];
+  const tabBody={
+   kondisi:()=>`<div class="grid2"><div class="card"><h3>Catat kondisi hari ini</h3><p class="sub">Isi hasil pemeriksaan tanda vital.</p>
+     <form class="form" id="f"><input type="hidden" name="rm" value="${esc(d.rm)}">
+      ${field('Tekanan darah atas (sistolik)','systolic','number','min="0" step="any" placeholder="120"','mmHg')}
+      ${field('Tekanan darah bawah (diastolik)','diastolic','number','min="0" step="any" placeholder="80"','mmHg')}
+      ${field('Suhu tubuh','temperature','number','min="0" step="0.1" placeholder="36.7"','°C')}
+      ${field('Detak jantung','heartRate','number','min="0" step="any" placeholder="80"','kali per menit')}
+      <label class="field full"><span>Catatan kondisi</span><textarea name="notes" placeholder="Contoh: pasien stabil, nafsu makan baik"></textarea></label>
+      <div class="full actions"><button class="btn" type="submit">Simpan kondisi</button></div></form></div>
+     <div><div class="sect" style="margin-top:0"><h3>Catatan sebelumnya</h3></div>${vitals(d.records)}</div></div>`,
+   tindakan:()=>`<div class="grid2"><div class="card"><h3>Tambah tindakan medis</h3><p class="sub">Biaya akan masuk ke tagihan final.</p>
+     <form class="form" id="f"><input type="hidden" name="rm" value="${esc(d.rm)}"><div class="full">${field('Nama tindakan','name','text','placeholder="Contoh: Visite dokter"')}</div>
+      <div class="full">${field('Biaya tindakan (Rp)','cost','number','min="0" step="1000" inputmode="numeric"')}</div>
+      <div class="full actions"><button class="btn" type="submit">Simpan tindakan</button></div></form></div>
+     <div><div class="sect" style="margin-top:0"><h3>Tindakan tercatat</h3></div>${d.actions.length?`<div class="list">${d.actions.map(a=>`<div class="row"><div class="txt"><b>${esc(a.name)}</b></div><span class="money">${rp(a.cost)}</span></div>`).join('')}</div>`:emptyBox('Belum ada tindakan medis.')}</div></div>`,
+   obat:()=>`<div class="grid2"><div class="card"><h3>Tambah obat atau infus</h3><p class="sub">Biaya dihitung per hari selama dirawat.</p>
+     <form class="form" id="f"><input type="hidden" name="rm" value="${esc(d.rm)}"><div class="full">${field('Nama obat / infus','name','text','placeholder="Contoh: Infus NaCl"')}</div>
+      <div class="full">${field('Biaya per hari (Rp)','cost','number','min="0" step="1000" inputmode="numeric"')}</div>
+      <div class="full actions"><button class="btn" type="submit">Simpan obat / infus</button></div></form></div>
+     <div><div class="sect" style="margin-top:0"><h3>Obat & infus tercatat</h3></div>${d.medications.length?`<div class="list">${d.medications.map(a=>`<div class="row"><div class="txt"><b>${esc(a.name)}</b><small>per hari</small></div><span class="money">${rp(a.dailyCost)}</span></div>`).join('')}</div>`:emptyBox('Belum ada obat atau infus.')}</div></div>`,
+   rekap:()=>`<div class="card"><h3>Rekap harian pasien</h3><p class="sub">Ringkasan perawatan dan estimasi biaya per hari (kamar + tindakan + obat).</p>
+     <div class="facts"><div class="fact">No. RM<b>${esc(d.rm)}</b></div><div class="fact">Nama<b>${esc(d.name)}</b></div><div class="fact">Kamar<b>${esc(d.room)} (${esc(d.roomClass)})</b></div><div class="fact">Dokter<b>${esc(d.doctor)}</b></div><div class="fact">Estimasi biaya per hari<b>${rp(d.dailyCost)}</b></div></div></div>
+     <div class="sect"><h3>Catatan kondisi harian</h3><span>diurutkan dari yang pertama dicatat</span></div>${vitals(d.records)}`
+  };
+  view.innerHTML=`<div class="card"><div class="form"><div class="full"><label class="field"><span>Pilih pasien</span><select id="ps">${OV.patients.map(p=>`<option value="${esc(p.rm)}" ${p.rm===sel.rm?'selected':''}>${esc(p.name)} · RM ${esc(p.rm)} · Kamar ${esc(p.room)}</option>`).join('')}</select></label></div></div>
+    <div class="facts"><div class="fact">Kamar<b>${esc(d.room)} · ${esc(d.roomClass)}</b></div><div class="fact">Dokter<b>${esc(d.doctor)}</b></div><div class="fact">Usia<b>${d.age} tahun</b></div><div class="fact">Masuk<b>${esc(d.admissionDate)}</b></div></div></div>
+    <div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${k===sel.tab}" data-t="${k}">${l}</button>`).join('')}</div>
+    <div id="tb">${tabBody[sel.tab]()}</div>`;
+  $('#ps').onchange=e=>{sel.rm=e.target.value;go();};
+  view.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{sel.tab=b.dataset.t;go();});
+  const f=$('#f');
+  if(f){const ep={kondisi:'/api/daily',tindakan:'/api/action',obat:'/api/medication'}[sel.tab];
+    bind(f,async x=>{const r=await api(ep,'POST',x);await go();return r;});}
+}},
+
+lab:{title:'Laboratorium',sub:'Permintaan dan hasil pemeriksaan',icon:'flask',async render(){
+  if(!OV.patients.length){view.innerHTML=needPatients();return;}
+  if(!OV.patients.some(p=>p.rm===sel.rm))sel.rm=OV.patients[0].rm;
+  const d=await api('/api/patient?rm='+encodeURIComponent(sel.rm));
+  const last=d.labs[d.labs.length-1];
+  view.innerHTML=`<div class="card" style="margin-bottom:20px"><label class="field" style="max-width:520px"><span>Pilih pasien</span><select id="ps">${OV.patients.map(p=>`<option value="${esc(p.rm)}" ${p.rm===sel.rm?'selected':''}>${esc(p.name)} · RM ${esc(p.rm)}</option>`).join('')}</select></label></div>
+   <div class="grid2"><div class="stack">
+    <div class="card"><h3>Buat permintaan pemeriksaan</h3><p class="sub">Contoh: Darah Lengkap, Rontgen Dada.</p>
+      <form class="form" id="f1"><input type="hidden" name="rm" value="${esc(d.rm)}"><div class="full">${field('Nama pemeriksaan','test','text','maxlength="80"')}</div><div class="full actions"><button class="btn" type="submit">Buat permintaan</button></div></form></div>
+    <div class="card"><h3>Catat hasil terbaru</h3><p class="sub">${last?`Untuk permintaan terakhir: <b>${esc(last.test)}</b> (${last.status==='SELESAI'?'sudah ada hasil':'menunggu hasil'}).`:'Buat permintaan terlebih dahulu.'}</p>
+      <form class="form" id="f2"><input type="hidden" name="rm" value="${esc(d.rm)}"><label class="field full"><span>Hasil pemeriksaan</span><textarea name="result" required ${last?'':'disabled'}></textarea></label><div class="full actions"><button class="btn" type="submit" ${last?'':'disabled'}>Simpan hasil</button></div></form></div></div>
+    <div><div class="sect" style="margin-top:0"><h3>Riwayat laboratorium</h3></div>${d.labs.length?`<div class="list">${d.labs.slice().reverse().map(l=>`<div class="row"><div class="txt"><b>${esc(l.test)}</b><small>${l.result?esc(l.result):'Menunggu hasil'}</small></div><span class="tag ${l.status==='SELESAI'?'ok':'wait'}">${l.status==='SELESAI'?'Selesai':'Diminta'}</span></div>`).join('')}</div>`:emptyBox('Belum ada pemeriksaan laboratorium.')}</div></div>`;
+  $('#ps').onchange=e=>{sel.rm=e.target.value;go();};
+  bind($('#f1'),async x=>{const r=await api('/api/lab/request','POST',x);await go();return r;});
+  bind($('#f2'),async x=>{const r=await api('/api/lab/result','POST',x);await go();return r;});
+}},
+
+transfer:{title:'Pindah Kamar',sub:'Transfer pasien ke kelas kamar lain',icon:'swap',async render(){
+  if(!OV.patients.length){view.innerHTML=needPatients();return;}
+  if(!OV.patients.some(p=>p.rm===sel.rm))sel.rm=OV.patients[0].rm;
+  const cur=()=>OV.patients.find(p=>p.rm===sel.rm);
+  view.innerHTML=`<div class="card" style="max-width:760px"><h3>Pindahkan pasien</h3><p class="sub">Kamar lama akan dikosongkan otomatis.</p>
+    <form class="form" id="f"><div class="full">${patientSelect(sel.rm)}</div>
+     <div class="full notice" id="cur"></div>
+     <label class="field full"><span>Kelas kamar tujuan</span><select name="targetClass" required>${classOptions()}</select></label>
+     <div class="full actions"><button class="btn" type="submit">Pindahkan pasien</button></div></form></div>`;
+  const show=()=>{const p=cur();$('#cur').innerHTML=`Saat ini di kamar <b>${esc(p.room)}</b> (${esc(p.roomClass)}).`;};show();
+  $('select[name=rm]').onchange=e=>{sel.rm=e.target.value;show();};
+  bind($('#f'),async x=>{const r=await api('/api/transfer','POST',x);await go();return r;});
+}},
+
+pulang:{title:'Pulang & Tagihan',sub:'Discharge pasien dan buat tagihan final',icon:'door',async render(){
+  if(!OV.patients.length){view.innerHTML=needPatients();return;}
+  if(!OV.patients.some(p=>p.rm===sel.rm))sel.rm=OV.patients[0].rm;
+  view.innerHTML=`<div class="card" style="max-width:760px"><h3>Pulangkan pasien</h3><p class="sub">Kamar dikosongkan, pasien masuk riwayat, dan tagihan final dibuat otomatis.</p>
+    <form class="form" id="f"><div class="full">${patientSelect(sel.rm)}</div><div class="full actions"><button class="btn" type="submit">Pulangkan & buat tagihan</button></div></form></div><div id="out" style="margin-top:24px"></div>`;
+  $('select[name=rm]').onchange=e=>sel.rm=e.target.value;
+  bind($('#f'),async x=>{
+    const p=OV.patients.find(q=>q.rm===x.rm);
+    if(!await confirmBox('Pulangkan pasien?',`${p.name} (RM ${p.rm}) akan dipulangkan dan kamar ${p.room} dikosongkan. Tindakan ini tidak bisa dibatalkan.`,'Ya, pulangkan',true))return{message:'Dibatalkan.'};
+    const r=await api('/api/discharge','POST',x);await refresh();sel.rm='';
+    $('#f').closest('.card').querySelector('select').innerHTML=OV.patients.map(q=>`<option value="${esc(q.rm)}">${esc(q.name)} · RM ${esc(q.rm)} · Kamar ${esc(q.room)}</option>`).join('');
+    $('#out').innerHTML=`<div class="sect" style="margin-top:0"><h3>Tagihan final</h3></div>${receipt(r.bill)}<div class="actions" style="margin-top:16px"><a class="btn" href="#asuransi">Ajukan klaim asuransi</a></div>`;
+    if(!OV.patients.length)$('#f').innerHTML='<div class="full">'+emptyBox('Semua pasien sudah dipulangkan.')+'</div>';
+    return r;});
+}},
+
+asuransi:{title:'Klaim Asuransi',sub:'Hitung tanggungan asuransi pada tagihan',icon:'shield',async render(){
+  const {bills}=await api('/api/bills');
+  if(!bills.length){view.innerHTML=emptyBox('Belum ada tagihan. Tagihan dibuat saat pasien dipulangkan.',['#pulang','Pulangkan pasien.']);return;}
+  const latest=bills.length-1;
+  view.innerHTML=`<div class="grid2"><div class="card"><h3>Klaim baru</h3><p class="sub">Biasanya diajukan untuk tagihan terbaru.</p>
+    <form class="form" id="f"><label class="field full"><span>Tagihan</span><select name="billIndex" id="bi">${bills.map((b,i)=>`<option value="${b.index}" ${i===latest?'selected':''}>${esc(b.patient)} · RM ${esc(b.rm)} · ${rp(b.total)}</option>`).join('')}</select></label>
+     <div class="full">${field('Nama asuransi','name','text','placeholder="Contoh: Asuransi Sehat"')}</div>
+     <label class="field full"><span>Persentase tanggungan: <b id="pv">80</b>%</span><input type="range" name="percent" min="0" max="100" value="80" style="padding:0;min-height:36px" id="pr"><small>Geser untuk mengatur 0 sampai 100 persen.</small></label>
+     <div class="full actions"><button class="btn" type="submit">Hitung klaim</button></div></form></div>
+    <div id="out"></div></div>`;
+  const show=b=>$('#out').innerHTML=receipt(b);
+  show(bills[latest]);
+  $('#pr').oninput=e=>$('#pv').textContent=e.target.value;
+  $('#bi').onchange=e=>show(bills[+e.target.value]);
+  bind($('#f'),async x=>{const r=await api('/api/insurance','POST',x);bills[+x.billIndex]=r.bill;show(r.bill);return r;});
+}},
+
+tagihan:{title:'Riwayat Tagihan',sub:'Semua tagihan yang tersimpan',icon:'receipt',async render(){
+  const {bills,claims}=await api('/api/bills');
+  if(!bills.length){view.innerHTML=emptyBox('Belum ada tagihan tersimpan.');return;}
+  view.innerHTML=`<div class="bills">${bills.slice().reverse().map(receipt).join('')}</div>
+   ${claims.length?`<div class="sect"><h3>Klaim asuransi</h3></div><div class="card tw"><table><thead><tr><th>Asuransi</th><th>Tanggungan</th><th>Ditanggung</th><th>Sisa</th></tr></thead><tbody>${claims.map(c=>`<tr><td>${esc(c.name)}</td><td>${c.percent}%</td><td>${rp(c.covered)}</td><td>${rp(c.remaining)}</td></tr>`).join('')}</tbody></table></div>`:''}`;
+}}
+};
+
+function vitals(records){
+  if(!records.length)return emptyBox('Belum ada catatan kondisi.');
+  return `<div class="vitals">${records.map(s=>{const p=s.split(' | ');const notes=p.slice(4).join(' | ');
+    return `<div class="vital"><div class="d">${esc(p[0])}</div><div class="vs"><span class="pill">${esc(p[1]||'')}</span><span class="pill">${esc(p[2]||'')}</span><span class="pill">${esc(p[3]||'')}</span></div>${notes?`<p>${esc(notes)}</p>`:''}</div>`;}).join('')}</div>`;
+}
+
+/* ---------- router ---------- */
+$('#nav').innerHTML=Object.entries(PAGES).map(([k,p])=>`<a href="#${k}" data-k="${k}">${svg(p.icon)}${p.title}</a>`).join('');
+let busy=false;
+async function go(){
+  const k=(location.hash||'#beranda').slice(1);const pg=PAGES[k]||PAGES.beranda;
+  const key=PAGES[k]?k:'beranda';
+  document.querySelectorAll('#nav a').forEach(a=>a.toggleAttribute('aria-current',a.dataset.k===key)||a.removeAttribute('aria-current'));
+  document.querySelectorAll('#nav a').forEach(a=>{if(a.dataset.k===key)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  $('#ttl').textContent=pg.title;$('#sub').textContent=pg.sub;document.title=pg.title+' · Rumah Sakit B3';
+  const y=scrollY;
+  try{await refresh();await pg.render();}
+  catch(e){view.innerHTML=`<div class="card"><h3>Tidak dapat memuat halaman</h3><p class="sub">${esc(e.message)}</p><button class="btn" onclick="go()">Coba lagi</button></div>`;}
+  closeMenu();
+}
+window.addEventListener('hashchange',()=>{go();scrollTo(0,0);view.focus({preventScroll:true});});
+
+/* menu mobile & ukuran tulisan */
+const side=$('#side'),scrim=$('#scrim');
+const closeMenu=()=>{side.classList.remove('open');scrim.classList.remove('on');};
+$('#menu').onclick=()=>{side.classList.add('open');scrim.classList.add('on');};
+scrim.onclick=closeMenu;
+let fs=100;try{fs=+localStorage.getItem('fs')||100;}catch(e){}
+const setFs=v=>{fs=Math.max(90,Math.min(130,v));document.documentElement.style.setProperty('--fs',fs+'%');try{localStorage.setItem('fs',fs);}catch(e){}};
+setFs(fs);$('#fs-plus').onclick=()=>setFs(fs+10);$('#fs-minus').onclick=()=>setFs(fs-10);
+
+go();
+</script>
+</body>
+</html>
